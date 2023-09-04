@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Products</title>
+    <style>
+        .show {
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin: auto;
+            border: 2px solid black;
+            font-size: 30px;
+            font-family: 'Times New Roman', Times, serif;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .link {
+            padding: 20px;
+            display: flex;
+            margin: auto;
+            border: 2px solid black;
+            font-size: 30px;
+            font-family: 'Times New Roman', Times, serif;
+            align-items: center;
+            justify-content: center;
+        }
+        a{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="link">
+        <a onclick="apearAdd(event)">Add new product</a>
+    </div>
+
+    <div class="show" id="add" style="display: none;">
+        <form action="/productsAdd" method="post">
+            Numele Produsului: <input type="text" name="name" required/>
+            <br />
+            Brandul Produsului: <input type="text" name="brand" required/>
+            <br />
+            Pretul Produsului: <input type="number" name="price" required/>
+            <br />
+            Cantitatea Produsului: <input type="number" name="quantity" required/>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <div class="link" th:text="${message}"></div>
+
+    <div class="link">
+        <a onclick="apearDelete(event)">Delete product</a>
+    </div>
+
+    <div class="show" id="delete" style="display: none;"></div>
+
+    <div class="link">
+        <table>
+            <tr>
+                <th>name</th>
+                <th>brand</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>delete</th>
+            </tr>
+            <tr th:each="p:${products}">
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.brand}"></td>
+                <td th:text="${p.price}"></td>
+                <td th:text="${p.quantity}"></td>
+                <td>
+                    <form th:action="@{/delete}" method="post">
+                        <input type="hidden" name="deleteId" th:value="${p.id}" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="link" th:text="${messageDelete}"></div>
+
+    <div class="link">
+        <a onclick="apearUpdate(event)">Update product</a>
+    </div>
+
+    <div class="show" id="update" style="display: none;">
+
+    </div>
+
+    <div class="link">
+        <table>
+            <tr>
+                <th>name</th>
+                <th>brand</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>update</th>
+            </tr>
+            <tr th:each="p:${productsUpdate}">
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.brand}"></td>
+                <td th:text="${p.price}"></td>
+                <td th:text="${p.quantity}"></td>
+                <td>
+                    <form th:action="@{/update}" method="post">
+                        <br>
+                        <input type="hidden" name="updateId" th:value="${p.id}" />
+                        <input type="text" name="name" placeholder="Name" required/>
+                        <input type="text" name="brand" placeholder="Brand" required/>
+                        <input type="number" name="price" placeholder="Price" required/>
+                        <input type="number" name="quantity" placeholder="Quantity" required/>
+
+                        <input type="submit" value="Update" />
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="link" th:text="${messageUpdate}"></div>
+
+    <div class="link">
+        <a href="index.html">Main Page</a>
+    </div>
+</div>
+
+<script>
+        function apearAdd(event) {
+            event.preventDefault();
+            var div1 = document.getElementById("add");
+            if (div1.style.display === "none") {
+                div1.style.display = "flex";
+            } else {
+                div1.style.display = "none";
+            }
+        }
+
+        function apearDelete(event) {
+            event.preventDefault();
+            var div2 = document.getElementById("delete");
+            if (div2.style.display === "none") {
+                div2.style.display = "flex";
+                window.location.href = "/allForDelete";
+            } else {
+                div2.style.display = "none";
+            }
+        }
+
+        function apearUpdate(event) {
+            event.preventDefault();
+            var div3 = document.getElementById("update");
+            if (div3.style.display === "none") {
+                div3.style.display = "flex";
+                window.location.href = "/allForUpdate";
+            } else {
+                div3.style.display = "none";
+            }
+        }
+</script>
+</body>
+</html>

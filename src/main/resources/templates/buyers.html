@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Buyers</title>
+    <style>
+        .show {
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin: auto;
+            border: 2px solid black;
+            font-size: 30px;
+            font-family: 'Times New Roman', Times, serif;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .link {
+            padding: 20px;
+            display: flex;
+            margin: auto;
+            border: 2px solid black;
+            font-size: 30px;
+            font-family: 'Times New Roman', Times, serif;
+            align-items: center;
+            justify-content: center;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="link">
+        <a onclick="apearAdd(event)">Add new buyer</a>
+    </div>
+
+    <div class="show" id="add" style="display: none;">
+        <form action="/buyersAdd" method="post">
+            First Name: <input type="text" name="firstName" required/>
+            <br />
+            Last Name: <input type="text" name="lastName" required/>
+            <br />
+            Age: <input type="number" name="age" required/>
+            <br />
+            City: <input type="text" name="city" required/>
+            <br />
+            Street: <input type="text" name="street" required/>
+            <br />
+            Postal Code: <input type="number" name="postalCode" required/>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <div class="link" th:text="${message}"></div>
+
+    <div class="link">
+        <a onclick="apearDelete(event)">Delete buyer</a>
+    </div>
+
+    <div class="show" id="delete" style="display: none;"></div>
+
+    <div class="link">
+        <table>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Postal Code</th>
+                <th>Purchase Quantity</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="b:${buyers}">
+                <td th:text="${b.firstName}"></td>
+                <td th:text="${b.lastName}"></td>
+                <td th:text="${b.age}"></td>
+                <td th:text="${b.city}"></td>
+                <td th:text="${b.street}"></td>
+                <td th:text="${b.postalCode}"></td>
+                <td th:text="${b.purchasedQuantity}"></td>
+                <td>
+                    <form th:action="@{/deleteBuyer}" method="post">
+                        <input type="hidden" name="buyerId" th:value="${b.id}" />
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="link" th:text="${messageDelete}"></div>
+
+    <div class="link">
+        <a onclick="apearUpdate(event)">Update buyer</a>
+    </div>
+
+    <div class="show" id="update" style="display: none;"></div>
+
+    <div class="link">
+        <table>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Postal Code</th>
+                <th>Purchase Quantity</th>
+                <th>Update</th>
+            </tr>
+            <tr th:each="b:${buyersUpdate}">
+                <td th:text="${b.firstName}"></td>
+                <td th:text="${b.lastName}"></td>
+                <td th:text="${b.age}"></td>
+                <td th:text="${b.city}"></td>
+                <td th:text="${b.street}"></td>
+                <td th:text="${b.postalCode}"></td>
+                <td th:text="${b.purchasedQuantity}"></td>
+                <td>
+                    <form th:action="@{/updateBuyer}" method="post">
+                        <input type="hidden" name="updateId" th:value="${b.id}" />
+                        <input type="text" name="firstName" placeholder="First Name" required/>
+                        <input type="text" name="lastName" placeholder="Last Name" required/>
+                        <input type="number" name="age" placeholder="Age" required/>
+                        <input type="text" name="city" placeholder="City" required/>
+                        <input type="text" name="street" placeholder="Street" required/>
+                        <input type="number" name="postalCode" placeholder="Postal Code" required/>
+                        <input type="submit" value="Update" />
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="link" th:text="${messageUpdate}"></div>
+
+    <div class="link">
+        <a href="index.html">Main Page</a>
+    </div>
+
+</div>
+
+<script>
+        function apearAdd(event) {
+            event.preventDefault();
+            var div1 = document.getElementById("add");
+            if (div1.style.display === "none") {
+                div1.style.display = "flex";
+            } else {
+                div1.style.display = "none";
+            }
+        }
+
+        function apearDelete(event) {
+            event.preventDefault();
+            var div2 = document.getElementById("delete");
+            if (div2.style.display === "none") {
+                div2.style.display = "flex";
+                window.location.href = "/allBuyerForDelete";
+            } else {
+                div2.style.display = "none";
+            }
+        }
+
+        function apearUpdate(event) {
+            event.preventDefault();
+            var div3 = document.getElementById("update");
+            if (div3.style.display === "none") {
+                div3.style.display = "flex";
+                window.location.href = "/allBuyersForUpdate";
+            } else {
+                div3.style.display = "none";
+            }
+        }
+</script>
+</body>
+</html>
